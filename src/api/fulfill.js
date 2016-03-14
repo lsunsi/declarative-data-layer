@@ -55,14 +55,16 @@ export default async function (query) {
   );
 
   const result = {};
-  for (const name in query) {
-    if (query.hasOwnProperty(name)) {
-      result[name] = await fulfillRoot(
-        query[name],
-        schemas[name],
-      );
-    }
-  }
 
+  const promises = _.map(query, (value, name) =>
+    fulfillRoot(
+      value,
+      schemas[name],
+    ).then(res => {
+      result[name] = res;
+    })
+  );
+
+  await Promise.all(promises);
   return result;
 }
