@@ -1,6 +1,6 @@
 {
   "name": "data-layer",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Practical data queries inspired by GraphQL",
   "main": "index.js",
   "scripts": {
