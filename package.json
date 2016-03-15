@@ -1,8 +1,15 @@
 {
-  "name": "data-layer",
-  "version": "1.0.0",
+  "name": "graph-data-layer",
+  "version": "0.1.0",
   "description": "Practical data queries inspired by GraphQL",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lsunsi/graph-data-layer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lsunsi/graph-data-layer/issues"
+  },
   "scripts": {
     "build": "mkdir build; babel ./src -d build",
     "lint": "eslint ./src --ext .js --ext .jsx; exit 0",
