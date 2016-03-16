@@ -8,13 +8,21 @@ async function fulfillRoot(value, schema, context = []) {
   const { params = {} } = value;
   const fields = _.omit(value, 'params');
 
-  let result = schema.resolve(...context, params);
-  if (result instanceof Promise) result = await result;
+  let data = schema.resolve(...context, params);
+  if (data instanceof Promise) data = await data;
 
-  const res = {};
+  let flag = false;
+  if (_.isPlainObject(data)) {
+    flag = true;
+    data = [data];
+  } else if (!_.isArray(data)) {
+    throw error;
+  }
 
-  if (_.isPlainObject(result)) {
-    const ctx = [result, ...context];
+  const results = [];
+  for (const d of data) {
+    const res = {};
+    const ctx = [d, ...context];
     for (const name in fields) {
       if (fields.hasOwnProperty(name)) {
         const field = fields[name];
@@ -24,26 +32,14 @@ async function fulfillRoot(value, schema, context = []) {
           : await fulfillRoot(field, schema[name], ctx)
         );
       }
-    } return res;
+    } results.push(res);
   }
 
-  if (_.isArray(result)) {
-    for (const name in fields) {
-      if (fields.hasOwnProperty(name)) {
-        const field = fields[name];
-        res[name] = [];
-        for (const t of result) {
-          res[name].push(
-            field === true
-            ? schema[name](t, ...context)
-            : await fulfillRoot(field, schema[name], [t, ...context])
-          );
-        }
-      }
-    } return res;
-  }
-
-  throw error;
+  return (
+    flag
+    ? results[0]
+    : results
+  );
 }
 
 export default async function (query) {
