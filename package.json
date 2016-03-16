@@ -1,6 +1,6 @@
 {
   "name": "graph-data-layer",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Practical data queries inspired by GraphQL",
   "main": "index.js",
   "repository": {
